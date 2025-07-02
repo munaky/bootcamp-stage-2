@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.3",
+    "@types/joi": "^17.2.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.11.0",
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "join": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.11.0"
+  },
+  "name": "day6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev ./src/app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
