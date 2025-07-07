@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  createAt DateTime @default(now())
+
+  stock Stock[]
+}
+
+
+model Supplier {
+  id Int @id @default(autoincrement())
+  name String
+  createAt DateTime @default(now())
+
+  stocks Stock[]
+}
+
+model Stock {
+  id Int @id @default(autoincrement())
+  stock Int
+  productId Int
+  supplierId Int
+  createAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  suplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+}
