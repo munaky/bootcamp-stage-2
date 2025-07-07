@@ -10,7 +10,7 @@ const ProductCard = ({ product, addToCart }: { product: Product, addToCart: any,
 
 
     return (
-        <div className="relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div key={product.id} className="relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div className={"absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md z-10 shadow " +
                 (product.added ? 'visible' : 'hidden')}>
                 Added
