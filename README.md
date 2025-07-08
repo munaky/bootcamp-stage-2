@@ -1,1 +1,1 @@
-# Frontend Day 1: Checkpoint 1
+# Day 1: Checkpoint 1
