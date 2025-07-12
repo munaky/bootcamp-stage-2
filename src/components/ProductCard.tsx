@@ -14,26 +14,28 @@ export default function ProductCard({ product }: { product: Product }) {
     const context = useContext(CartContext)
     if (!context) throw new Error('error context');
     const {cart, setCart} = context;
+    const inCart = cart.findIndex(item => item.id == product.id) !== -1 ? true : false;
 
     function handleAddItem(product: Product){
         const isExist = cart.findIndex(i => i.id == product.id);
         if(isExist != -1){
-            cart[isExist].quantity += 1
+            setCart(cart.map(item => {
+                if(item.id == product.id) item.quantity += 1;
+                return item;
+            }))
         }
         else {
-            (cart as any).push({...product, quantity: 1})
+           setCart([...cart, {...product, quantity: 1}])
         }
-
-        setCart(cart);
     }
 
     return (
         <Dialog>
             <div className="relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                {/* <div className={"absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md z-10 shadow " +
-                (product.added ? 'visible' : 'hidden')}>
+                <div className={"absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md z-10 shadow " +
+                (inCart ? 'visible' : 'hidden')}>
                 Added
-            </div> */}
+            </div>
 
                 <img
                     src={product.image}

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { useContext, useState } from "react";
-import { CartContext } from "../contexts/CartContext";
+import { useState } from "react";
 
 export default function Header(){
     const [menu, setMenu] = useState(0);
@@ -17,7 +16,7 @@ export default function Header(){
                     <Link to={'/products'}>Products</Link>
                 </Button>
                 <Button asChild onClick={() => setMenu(2)} variant={'ghost'} className={menu == 2 ? active : notActive}>
-                    <Link to={'/posts'}>
+                    <Link to={'/cart'}>
                     Cart 
                     </Link>
                 </Button>
