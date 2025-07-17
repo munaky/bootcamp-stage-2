@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const product_controller_1 = require("../../controllers/admin/product-controller");
+const multer_1 = require("../../utils/multer");
+const router = (0, express_1.Router)();
+router.get('/', product_controller_1.getAll);
+router.get('/get/:id', product_controller_1.get);
+router.post('/create', multer_1.uploadImage, product_controller_1.create);
+router.patch('/update/:id', multer_1.uploadImage, product_controller_1.update);
+router.patch('/:id/restore', product_controller_1.restore);
+router.delete('/delete/:id', product_controller_1.remove);
+exports.default = router;

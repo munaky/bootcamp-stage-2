@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const multer_1 = require("../../utils/multer");
+const account_controller_1 = require("../../controllers/admin/account-controller");
+const router = (0, express_1.Router)();
+router.get('/', account_controller_1.get);
+router.patch('/update', multer_1.uploadImage, account_controller_1.update);
+router.delete('/delete', account_controller_1.remove);
+exports.default = router;
