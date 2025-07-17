@@ -11,7 +11,7 @@ import adminAPI from "../../api/admin";
 
 
 
-export default function CreateProductDialog({setProducts}: {setProducts: any}) {
+export default function CreateProductDialog({ setProducts }: { setProducts: any }) {
   const { addToast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -44,7 +44,10 @@ export default function CreateProductDialog({setProducts}: {setProducts: any}) {
           addToast({ type: 'success', title: 'Created!', description: 'Product Created.', duration: 1000 });
         }
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        addToast({ type: 'error', title: 'Error!', description: 'Failed to create product.' });
+      })
 
   };
 

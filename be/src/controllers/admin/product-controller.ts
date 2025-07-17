@@ -95,13 +95,13 @@ export const update: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const remove: RequestHandler = async (req, res, next) => {
+export const disable: RequestHandler = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         const product = await prisma.product.update({
             where: { id },
             data: {deleteAt: new Date()}
-        }).catch(() => {throw {message: 'Failed to delete data!'}});
+        }).catch(() => {throw {message: 'Failed to disable data!'}});
 
         resSuccess(res, 200, 'Data deleted!', product);
     } catch (error) {
@@ -109,7 +109,7 @@ export const remove: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const restore: RequestHandler = async (req, res, next) => {
+export const enable: RequestHandler = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         const products = await prisma.product.update({
@@ -123,3 +123,15 @@ export const restore: RequestHandler = async (req, res, next) => {
     }
 }
 
+export const remove: RequestHandler = async (req, res, next) => {
+    try {
+        const id = Number(req.params.id);
+        const product = await prisma.product.delete({
+            where: { id }
+        }).catch(() => {throw {message: 'Failed to delete data!'}});
+
+        resSuccess(res, 200, 'Data deleted!', product);
+    } catch (error) {
+        next(error);
+    }
+}

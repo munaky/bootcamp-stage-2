@@ -12,23 +12,87 @@ import { useCart } from "../../hooks/useCart";
 import { Minus, Plus } from "lucide-react";
 import { Badge } from "../ui/badge";
 import userAPI from "../../api/user";
+import adminAPI from "../../api/admin";
+import { useToast } from "../../hooks/useToast";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product, products, setProducts }: { product: Product, products: Product[], setProducts: any }) {
+    const { addToast } = useToast();
+
     const handleDelete = () => {
+        adminAPI.delete(`/products/delete/${product.id}`)
+            .then(async (r) => {
+                const res = await r.data;
 
+                console.log(res);
+
+                addToast({ type: 'success', title: 'Deleted!', description: 'Product deleted.', duration: 1000 });
+
+                setProducts((prev: any) => prev.filter((p: Product) => p.id != product.id));
+            })
+            .catch((e) => {
+                console.log(e)
+                addToast({ type: 'error', title: 'Error!', description: 'Failed to delete product.' });
+            });
+    }
+
+    const handleDisable = () => {
+        adminAPI.patch(`/products/disable/${product.id}`)
+            .then(async (r) => {
+                const res = await r.data;
+
+                console.log(res);
+
+                addToast({ type: 'success', title: 'Disabled!', description: 'Product disabled.', duration: 1000 });
+
+                let newProducts: Product[] = products.map((p) => {
+                    const n = p;
+                    if(p.id === product.id) n.deleteAt = Date.now();
+                    
+                    return n
+                });
+                setProducts(newProducts);
+
+            })
+            .catch((e) => {
+                console.log(e)
+                addToast({ type: 'error', title: 'Error!', description: 'Failed to disable product.' });
+            });
+    }
+
+    const handleEnable = () => {
+        adminAPI.patch(`/products/enable/${product.id}`)
+            .then(async (r) => {
+                const res = await r.data;
+
+                console.log(res);
+
+                addToast({ type: 'success', title: 'Enabled!', description: 'Product enabled.', duration: 1000 });
+
+                let newProducts: Product[] = products.map((p) => {
+                    const n = p;
+                    if(p.id === product.id) n.deleteAt = null;
+                    
+                    return n
+                });
+                setProducts(newProducts);
+            })
+            .catch((e) => {
+                console.log(e)
+                addToast({ type: 'error', title: 'Error!', description: 'Failed to enable product.' });
+            });
     }
 
     const stockStatus = product.stock > 10
         ? "In Stock"
         : product.stock > 0
-        ? `Only ${product.stock} left!`
-        : "Out of Stock";
+            ? `Only ${product.stock} left!`
+            : "Out of Stock";
 
     const stockColor = product.stock === 0
         ? "bg-red-100 text-red-600"
         : product.stock < 10
-        ? "bg-yellow-100 text-yellow-800"
-        : "bg-green-100 text-green-700";
+            ? "bg-yellow-100 text-yellow-800"
+            : "bg-green-100 text-green-700";
 
     return (
         <Dialog>
@@ -84,18 +148,30 @@ export default function ProductCard({ product }: { product: Product }) {
                     </Badge>
 
                     <div className="w-full flex justify-between gap-2">
-                        <DialogTrigger className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300">
-                            Cancel
+                        <DialogTrigger className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">
+                            Edit
                         </DialogTrigger>
+                        {product.deleteAt != null ?
+                            (
+                                <DialogTrigger
+                                    onClick={handleEnable}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md"
+                                >
+                                    Enable
+                                </DialogTrigger>
+                            )
+                            :
+                            (
+                                <DialogTrigger
+                                    onClick={handleDisable}
+                                    className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-md"
+                                >
+                                    Disable
+                                </DialogTrigger>
+                            )}
                         <DialogTrigger
                             onClick={handleDelete}
-                            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        >
-                            Disable
-                        </DialogTrigger>
-                        <DialogTrigger
-                            onClick={handleDelete}
-                            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md"
                         >
                             Delete
                         </DialogTrigger>

@@ -49,7 +49,6 @@ export default function Products() {
 
     const handleFilter = () => {
         setPage(1);
-        console.log(query())
         adminAPI.get(`/products/?${query(1)}`)
             .then(async (r) => {
                 const res = await r.data;
@@ -142,7 +141,7 @@ export default function Products() {
                 <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {products.length > 0 ? (
                         products.map((product: Product) => (
-                            <ProductCard key={product.id} product={product} />
+                            <ProductCard key={product.id} product={product} products={products} setProducts={setProducts} />
                         ))
                     ) : (
                         <p className="col-span-full text-center text-gray-600">No products found.</p>
