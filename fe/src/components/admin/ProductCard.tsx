@@ -9,11 +9,12 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { useCart } from "../../hooks/useCart";
-import { Minus, Plus } from "lucide-react";
+import { Edit, Minus, Plus } from "lucide-react";
 import { Badge } from "../ui/badge";
 import userAPI from "../../api/user";
 import adminAPI from "../../api/admin";
 import { useToast } from "../../hooks/useToast";
+import EditProductDialog from "./EditProductDialog";
 
 export default function ProductCard({ product, products, setProducts }: { product: Product, products: Product[], setProducts: any }) {
     const { addToast } = useToast();
@@ -117,7 +118,6 @@ export default function ProductCard({ product, products, setProducts }: { produc
                         </Badge>
                     </div>
                     <DialogTrigger
-                        disabled={product.stock === 0}
                         className="w-full mt-2 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl font-semibold text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         View Details
@@ -148,9 +148,7 @@ export default function ProductCard({ product, products, setProducts }: { produc
                     </Badge>
 
                     <div className="w-full flex justify-between gap-2">
-                        <DialogTrigger className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">
-                            Edit
-                        </DialogTrigger>
+                        <EditProductDialog product={product} setProducts={setProducts} />
                         {product.deleteAt != null ?
                             (
                                 <DialogTrigger
